@@ -3,7 +3,7 @@
 set -e
 #############################################################################
 #                                                                           #
-# Github Project 'pterodactyl-installer'                                    #
+# Github Project 'dashactyl-installer'                                    #
 # By _Josh_#0086                                                            #
 #                                                                           #
 # Copyright (C) 2018 - 2020, _Josh_#0086.                                   #
