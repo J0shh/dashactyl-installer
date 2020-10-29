@@ -99,23 +99,23 @@ settings_configuration() {
     cd /var/www/dashactyl/
     file=settings.json
 
-    echo What is the web port? [80] (This is the port Dashactyl will run on)
+    echo "What is the web port? [80] (This is the port Dashactyl will run on)"
     read WEBPORT
-    echo What is the web secret? (This will be used for logins)
+    echo "What is the web secret? (This will be used for logins)"
     read WEB_SECRET
-    echo What is the pterodactyl domain? [panel.yourdomain.com]
+    echo "What is the pterodactyl domain? [panel.yourdomain.com]"
     read PTERODACTYL_DOMAIN
-    echo What is the pterodactyl key?
+    echo "What is the pterodactyl key?"
     read PTERODACTYL_KEY
-    echo What is the Discord Oauth2 ID?
+    echo "What is the Discord Oauth2 ID?"
     read DOAUTH_ID
-    echo What is the Discord Oauth2 Secret?
+    echo "What is the Discord Oauth2 Secret?"
     read DOAUTH_SECRET
-    echo What is the Discord Oauth2 Link?
+    echo "What is the Discord Oauth2 Link?"
     read DOAUTH_LINK
-    echo What is the Callback path? [callback] 
+    echo "What is the Callback path? [callback]" 
     read DOAUTH_CALLBACKPATH
-    echo Prompt [TRUE/FALSE] (When set to true users wont have to relogin after a session)
+    echo "Prompt [TRUE/FALSE] (When set to true users wont have to relogin after a session)"
     read DOAUTH_PROMPT
 
     sed -i -e 's/80/'$WEBPORT'/' -e 's/change this website session secret password/'$WEB_SECRET'/' -e 's/pterodactyl panel domain/'$PTERODACTYL_DOMAIN'/' -e 's/pterodactyl panel admin api key/'$PTERODACTYL_KEY'/' -e 's/discord oauth2 application/'$DOUATH_KEY'/' -e 's/discord oauth2 application secret/'$DOAUTH_SECRET'/' -e 's/discord oauth2 application link/'$DOUATH_LINK'/' -e 's/callback/'$DOUATH_CALLBACKPATH'/' -e 's/true/'$DOAUTH_PROMPT'/' $file
