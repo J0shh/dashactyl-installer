@@ -1,25 +1,11 @@
 #!/bin/bash
 
 set -e
+
 #############################################################################
 #                                                                           #
-# Github Project 'dashactyl-installer'                                    #
-# By _Josh_#0086                                                            #
+# Project 'dashactyl-installer'                                 #
 #                                                                           #
-# Copyright (C) 2018 - 2020, _Josh_#0086.                                   #
-#                                                                           #
-#   This program is free software: you can redistribute it and/or modify    #
-#   it under the terms of the GNU General Public License as published by    #
-#   the Free Software Foundation, either version 3 of the License, or       #
-#   (at your option) any later version.                                     #
-#                                                                           #
-#   This program is distributed in the hope that it will be useful,         #
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of          #
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           #
-#   GNU General Public License for more details.                            #
-#                                                                           #
-#   You should have received a copy of the GNU General Public License       #
-#   along with this program.  If not, see <https://www.gnu.org/licenses/>.  #
 #                                                                           #
 #############################################################################
    clear
@@ -93,34 +79,31 @@ file_install() {
 settings_configuration() {
     echo "-------------------------------------------------------"
     echo "Starting Settings Configuration."
-    echo "Read the Docs for more infomration about the settings."
-    echo "https://josh0086.gitbook.io/dashactyl/"
     echo "-------------------------------------------------------"
     cd /var/www/dashactyl/
     file=settings.json
 
-    echo "What is the web port? [80] (This is the port Dashactyl will run on)"
+    echo What is the web port?
     read WEBPORT
-    echo "What is the web secret? (This will be used for logins)"
+    echo What is the web secret?
     read WEB_SECRET
-    echo "What is the pterodactyl domain? [panel.yourdomain.com]"
+    echo What is the pterodactyl domain?
     read PTERODACTYL_DOMAIN
-    echo "What is the pterodactyl key?"
+    echo What is the pterodactyl key?
     read PTERODACTYL_KEY
-    echo "What is the Discord Oauth2 ID?"
+    echo What is the Discord Oauth2 ID?
     read DOAUTH_ID
-    echo "What is the Discord Oauth2 Secret?"
+    echo What is the Discord Oauth2 Secret?
     read DOAUTH_SECRET
-    echo "What is the Discord Oauth2 Link?"
+    echo What is the Discord Oauth2 Link?
     read DOAUTH_LINK
-    echo "What is the Callback path? [callback]" 
+    echo What is the Callback path?
     read DOAUTH_CALLBACKPATH
-    echo "Prompt [TRUE/FALSE] (When set to true users wont have to relogin after a session)"
+    echo 'Prompt?'
     read DOAUTH_PROMPT
-
-    sed -i -e 's/80/'$WEBPORT'/' -e 's/change this website session secret password/'$WEB_SECRET'/' -e 's/pterodactyl panel domain/'$PTERODACTYL_DOMAIN'/' -e 's/pterodactyl panel admin api key/'$PTERODACTYL_KEY'/' -e 's/discord oauth2 application/'$DOUATH_KEY'/' -e 's/discord oauth2 application secret/'$DOAUTH_SECRET'/' -e 's/discord oauth2 application link/'$DOUATH_LINK'/' -e 's/callback/'$DOUATH_CALLBACKPATH'/' -e 's/true/'$DOAUTH_PROMPT'/' $file
-
+    echo "DOAUTH_LINK=" $WEB_SECRET
+    sed -i -e 's/"port":.*/"port": '$WEBPORT',/' -e 's/"secret":.*/"secret": "'$WEB_SECRET'"/' -e 's/"domain":.*/"domain": "'$PTERODACTYL_DOMAIN'",/' -e 's/"key":.*/"key": "'$PTERODACTYL_KEY'"/' -e 's/"id":.*/"id": "'$DOAUTH_ID'",/' -e 's/"link":.*/"link": "'$DOAUTH_LINK'",/' -e 's/"path":.*/"path": "'$DOAUTH_CALLBACKPATH'",/' -e 's/"prompt":.*/"prompt": '$DOAUTH_PROMPT'/' -e '0,/"secret":.*/! {0,/"secret":.*/ s/"secret":.*/"secret": "'$DOAUTH_SECRET'",/}' $file
     echo "-------------------------------------------------------"
     echo "Configuration Settings Completed!"
 }
-    install_options
+install_options
