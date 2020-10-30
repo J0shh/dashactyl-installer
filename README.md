@@ -3,6 +3,7 @@ This is a simple script that allows you to do one command to fully install and c
 
 # Installation
 `curl -Lo install.sh https://raw.githubusercontent.com/J0shh/dashactyl-installer/main/install.sh`
+
 `sudo bash install.sh`
 
 # Feedback and Suggestions
