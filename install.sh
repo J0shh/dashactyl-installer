@@ -41,6 +41,7 @@ install_options(){
     echo "[2] Install the Dependercies."
     echo "[3] Install the Files."
     echo "[4] Configure Settings."
+    echo "[5] Check for Updates"
     echo "-------------------------------------------------------"
     read choice
     case $choice in
@@ -57,6 +58,9 @@ install_options(){
             ;;
         4 ) installoption=4
             settings_configuration
+            ;;
+        5 ) installoption=5
+            update_check
             ;;
         * ) output "You did not enter a valid selection."
             install_options
@@ -118,5 +122,44 @@ settings_configuration() {
     sed -i -e 's/"port":.*/"port": '$WEBPORT',/' -e 's/"secret":.*/"secret": "'$WEB_SECRET'"/' -e 's/"domain":.*/"domain": "'$PTERODACTYL_DOMAIN'",/' -e 's/"key":.*/"key": "'$PTERODACTYL_KEY'"/' -e 's/"id":.*/"id": "'$DOAUTH_ID'",/' -e 's/"link":.*/"link": "'$DOAUTH_LINK'",/' -e 's/"path":.*/"path": "'$DOAUTH_CALLBACKPATH'",/' -e 's/"prompt":.*/"prompt": '$DOAUTH_PROMPT'/' -e '0,/"secret":.*/! {0,/"secret":.*/ s/"secret":.*/"secret": "'$DOAUTH_SECRET'",/}' $file
     echo "-------------------------------------------------------"
     echo "Configuration Settings Completed!"
+}
+update_check() {
+    latest=$(wget https://raw.githubusercontent.com/J0shh/dashactyl-installer/main/LATEST.json -q -O -)
+    #latest='"version": "0.1.2-themes6",'
+    version=$(grep -Po '"version":.*?[^\\]",' /var/www/dashactyl/settings.json) 
+
+    if [ "$latest" =  "$version" ]; then
+    echo "-------------------------------------------------------"
+    echo "You're running the latest version of Dashactyl."
+    echo "-------------------------------------------------------"
+    else 
+    echo "You're running an outdated version of Dashactyl."
+    echo "-------------------------------------------------------"
+    echo "Would you like to update to the latest version? [Y/N]"
+    echo "Bu updating your files will be backed up in /var/www/dashactyl-backup/"
+    read UPDATE_OPTION
+    echo "-------------------------------------------------------"
+    if [ "$UPDATE_OPTION" = "Y" ]; then
+    var=`date +"%FORMAT_STRING"`
+    now=`date +"%m_%d_%Y"`
+    now=`date +"%Y-%m-%d"`
+    if [[ ! -e /var/www/dashactyl-backup/ ]]; then
+    mkdir /var/www/dashactyl-backup/
+    finish_update
+    elif [[ ! -d $dir ]]; then
+    finish_update
+    fi
+    else
+    echo "Update Aborted"
+    echo "Restart the script if this was a misstake."
+    echo "-------------------------------------------------------"
+    fi
+    fi
+}
+finish_update() {
+   tar -czvf "${now}.tar.gz" /var/www/dashactyl/
+   mv "${now}.tar.gz" /var/www/dashactyl-backup
+   rm -R /var/www/dashactyl/
+   file_install
 }
 install_options
