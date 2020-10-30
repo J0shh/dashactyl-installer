@@ -3,10 +3,8 @@
 set -e
 #############################################################################
 #                                                                           #
-# Github Project 'dashactyl-installer'                                    #
+# Github Project 'dashactyl-installer'                                      #
 # By _Josh_#0086                                                            #
-#                                                                           #
-# Copyright (C) 2018 - 2020, _Josh_#0086.                                   #
 #                                                                           #
 #   This program is free software: you can redistribute it and/or modify    #
 #   it under the terms of the GNU General Public License as published by    #
