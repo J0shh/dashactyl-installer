@@ -2,8 +2,8 @@
 This is a simple script that allows you to do one command to fully install and configure Dashactyl.
 
 # Installation
-curl -Lo install.sh https://raw.githubusercontent.com/J0shh/dashactyl-installer/main/install.sh
-sudo bash install.sh
+`curl -Lo install.sh https://raw.githubusercontent.com/J0shh/dashactyl-installer/main/install.sh`
+`sudo bash install.sh`
 
 # Feedback and Suggestions
 Please send me a message on Disocrd, `_Josh_#0086` if you have any suggestions or feedback or leave them on the github page.
