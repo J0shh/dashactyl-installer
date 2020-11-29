@@ -41,7 +41,8 @@ install_options(){
     echo "[2] Install the Dependercies."
     echo "[3] Install the Files."
     echo "[4] Configure Settings."
-    echo "[5] Check for Updates"
+    echo "[5] Create and configure a reverse proxy."
+    echo "[6] Check for Updates"
     echo "-------------------------------------------------------"
     read choice
     case $choice in
@@ -49,6 +50,7 @@ install_options(){
             dependercy_install
             file_install
             settings_configuration
+            reverseproxy_configuration
             ;;
         2 ) installoption=2
             dependercy_install
@@ -60,6 +62,9 @@ install_options(){
             settings_configuration
             ;;
         5 ) installoption=5
+            reverseproxy_configuration
+            ;;
+        6 ) installoption=6
             update_check
             ;;
         * ) output "You did not enter a valid selection."
@@ -123,8 +128,56 @@ settings_configuration() {
     echo "-------------------------------------------------------"
     echo "Configuration Settings Completed!"
 }
+reverseproxy_configuration() {
+    echo "-------------------------------------------------------"
+    echo "Starting Reverse Proxy Configuration."
+    echo "Read the Docs for more infomration about the Configuration."
+    echo "https://josh0086.gitbook.io/dashactyl/"
+    echo "-------------------------------------------------------"
+
+   echo "Select your webserver [NGINX]"
+   read WEBSERVER
+   echo "Protocol Type [HTTP]"
+   read PROTOCOL
+   if [ $PROTOCOL != "HTTP" ]; then
+   echo "------------------------------------------------------"
+   echo "HTTP is currently only supported on the install script."
+   echo "------------------------------------------------------"
+   return
+   fi
+   if [ $WEBSERVER != "NGINX" ]; then
+   echo "------------------------------------------------------"
+   echo "Aborted, only Nginx is currently supported for the reverse proxy."
+   echo "------------------------------------------------------"
+   return
+   fi
+   echo "What is your domain? [example.com]"
+   read DOMAIN
+   apt install nginx
+   sudo wget -O /etc/nginx/conf.d/dashactyl.conf https://raw.githubusercontent.com/J0shh/dashactyl-installer/main/assets/NginxHTTPReverseProxy.conf
+   sudo apt-get install jq 
+   port=$(jq -r '.["website"]["port"]' /var/www/dashactyl/settings.json)
+   sed -i 's/PORT/'$port'/g' /etc/nginx/conf.d/dashactyl.conf
+   sed -i 's/DOMAIN/'$DOMAIN'/g' /etc/nginx/conf.d/dashactyl.conf
+   sudo nginx -t
+   sudo nginx -s reload
+   systemctl restart nginx
+   echo "-------------------------------------------------------"
+   echo "Reverse Proxy Install and configuration completed."
+   echo "-------------------------------------------------------"
+   echo "Here is the config status:"
+   sudo nginx -t
+   echo "-------------------------------------------------------"
+   echo "Note: if it does not say OK in the line, an error has occurred and you should try again or get help in the Dashactyl Discord Server."
+   echo "-------------------------------------------------------"
+   if [ $WEBSERVER = "APACHE" ]; then
+   echo "Apache isn't currently supported with the install script."
+   echo "------------------------------------------------------"
+   return
+   fi
+}
 update_check() {
-    latest=$(wget https://raw.githubusercontent.com/J0shh/dashactyl-installer/main/LATEST.json -q -O -)
+    latest=$(wget https://raw.githubusercontent.com/J0shh/dashactyl-installer/main/assets/LATEST.json -q -O -)
     #latest='"version": "0.1.2-themes6",'
     version=$(grep -Po '"version":.*?[^\\]",' /var/www/dashactyl/settings.json) 
 
