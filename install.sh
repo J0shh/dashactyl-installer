@@ -21,6 +21,8 @@ set -e
 #                                                                           #
 #############################################################################
    clear
+   apt-get update
+   clear
 
     echo "Dashactyl Install Script"
     echo "-------------------------------------------------------"
@@ -76,10 +78,10 @@ dependercy_install() {
     echo "------------------------------------------------------"
     echo "Starting Dependercy install."
     echo "------------------------------------------------------"
-    sudo apt-get install nodejs
-    sudo apt install npm
-    sudo apt-get install git
-    sudo apt update
+    sudo apt-get install nodejs -y
+    sudo apt install npm -y
+    sudo apt-get install git -y
+    sudo apt update -y
     echo "-------------------------------------------------------"
     echo "Dependercy Install Completed!"
     echo "-------------------------------------------------------"
@@ -153,9 +155,9 @@ reverseproxy_configuration() {
    fi
    echo "What is your domain? [example.com]"
    read DOMAIN
-   apt install nginx
+   apt install nginx -y
    sudo wget -O /etc/nginx/conf.d/dashactyl.conf https://raw.githubusercontent.com/J0shh/dashactyl-installer/main/assets/NginxHTTPReverseProxy.conf
-   sudo apt-get install jq 
+   sudo apt-get install jq -y
    port=$(jq -r '.["website"]["port"]' /var/www/dashactyl/settings.json)
    sed -i 's/PORT/'$port'/g' /etc/nginx/conf.d/dashactyl.conf
    sed -i 's/DOMAIN/'$DOMAIN'/g' /etc/nginx/conf.d/dashactyl.conf
